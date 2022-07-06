@@ -22,7 +22,7 @@ export const Layout = ({ children, title }: Props) => {
           property="og:description"
           content="Muestra informacion de los primeros 151 pokemones"
         />
-        <meta property="og:image" content={`${origin}/image/banner.png`} />
+        <meta property="og:image" content={`${origin}/images/banner.png`} />
       </Head>
 
       <Navbar />
