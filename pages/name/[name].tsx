@@ -36,7 +36,7 @@ const PokemonNamePage = ({ pokemon }: Props) => {
   };
 
   return (
-    <Layout title={capitalize(pokemon.name)}>
+    <Layout title={capitalize(pokemon.name)} image={pokemon.sprites.other?.dream_world.front_default || ""} >
       <Grid.Container gap={2} css={{ marginTop: "5px" }}>
         <Grid xs={12} sm={4}>
           <Card isHoverable css={{ padding: "25px" }}>
