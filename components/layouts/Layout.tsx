@@ -4,12 +4,11 @@ import { Navbar } from "../ui";
 interface Props {
   children: JSX.Element | JSX.Element[];
   title?: string;
-  image?: string;
 }
 
 const origin = typeof window === "undefined" ? "" : window.location.origin;
 
-export const Layout = ({ children, title, image }: Props) => {
+export const Layout = ({ children, title }: Props) => {
 
   return (
     <>
@@ -23,7 +22,7 @@ export const Layout = ({ children, title, image }: Props) => {
           property="og:description"
           content={title ? title : "Muestra informacion de los primeros 151 pokemones"}
         />
-        <meta property="og:image" content={image ? image : `${origin}/images/banner.png`} />
+        <meta property="og:image" content={`${origin}/images/banner.png`} />
       </Head>
 
       <Navbar />
