@@ -19,7 +19,7 @@ export const PokemonCard = ({ id, image, name }: SmallPokemon) => {
         onClick={handleClick}
       >
         <Card.Body>
-          <Card.Image src={image} width={"100%"} height={150} />
+          <Card.Image src={image || "/images/no-image.png"} width={"100%"} height={150} />
         </Card.Body>
         <Card.Footer>
           <Row justify="space-between">

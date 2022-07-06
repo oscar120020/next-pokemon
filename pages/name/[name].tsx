@@ -5,13 +5,18 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import { pokeApi } from "../../api";
 import { Layout } from "../../components/layouts";
-import { capitalize, getPokemonInfo, pokemonExist, toggleFavorites } from "../../helpers";
+import {
+  capitalize,
+  getPokemonInfo,
+  pokemonExist,
+  toggleFavorites,
+} from "../../helpers";
 import { Pokemon, PokemonsResponse } from "../../interfaces";
 import confetti from "canvas-confetti";
-import styles from '../../styles/name.module.css'
+import styles from "../../styles/name.module.css";
 
 interface Props {
-    pokemon: Pokemon
+  pokemon: Pokemon;
 }
 
 const PokemonNamePage = ({ pokemon }: Props) => {
@@ -36,7 +41,10 @@ const PokemonNamePage = ({ pokemon }: Props) => {
   };
 
   return (
-    <Layout title={capitalize(pokemon.name)} image={pokemon.sprites.other?.home.front_default} >
+    <Layout
+      title={capitalize(pokemon.name)}
+      image={pokemon.sprites.other?.home.front_default}
+    >
       <Grid.Container gap={2} css={{ marginTop: "5px" }}>
         <Grid xs={12} sm={4}>
           <Card isHoverable css={{ padding: "25px" }}>
@@ -44,7 +52,7 @@ const PokemonNamePage = ({ pokemon }: Props) => {
               <Card.Image
                 src={
                   pokemon.sprites.other?.dream_world.front_default ||
-                  "no-image.png"
+                  "/images/no-image.png"
                 }
                 alt={pokemon.name}
                 width="100%"
@@ -71,25 +79,25 @@ const PokemonNamePage = ({ pokemon }: Props) => {
               <Text h3>Sprites:</Text>
               <Container display="flex" direction="row" justify="space-between">
                 <Image
-                  src={pokemon.sprites.front_default}
+                  src={pokemon.sprites.front_default || "/images/no-image.png"}
                   alt={pokemon.name}
                   width={100}
                   height={100}
                 />
                 <Image
-                  src={pokemon.sprites.back_default}
+                  src={pokemon.sprites.back_default || "/images/no-image.png"}
                   alt={pokemon.name}
                   width={100}
                   height={100}
                 />
                 <Image
-                  src={pokemon.sprites.front_shiny}
+                  src={pokemon.sprites.front_shiny || "/images/no-image.png"}
                   alt={pokemon.name}
                   width={100}
                   height={100}
                 />
                 <Image
-                  src={pokemon.sprites.back_shiny}
+                  src={pokemon.sprites.back_shiny || "/images/no-image.png"}
                   alt={pokemon.name}
                   width={100}
                   height={100}
@@ -108,19 +116,29 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 
   return {
     paths: data.results.map(({ name }) => ({ params: { name } })),
-    fallback: false, // false or 'blocking'
+    fallback: "blocking", // false or 'blocking'
   };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { name } = params as { name: string };
 
-  const pokemon = await getPokemonInfo(name)
+  const pokemon = await getPokemonInfo(name);
+
+  if (!pokemon) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {
-      pokemon
+      pokemon,
     },
+    revalidate: 86400,
   };
 };
 
